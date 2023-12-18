@@ -1,0 +1,14 @@
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "atendimento_prefeitura";
+
+// Cria conexão
+$mysqli = new mysqli($servername, $username, $password, $dbname);
+
+// Verifica conexão
+if ($mysqli->connect_errno) {
+    die("Conexão falhou:(" . $mysqli->connect_errno . ") " . $mysqli->connect_error);
+}
+?>
