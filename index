@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cadastro de Pessoas</title>
+</head>
+<body>
+    <h1>Cadastro de Pessoas</h1>
+    <form action="index.php" method="POST">
+        Nome: <input type="text" name="nome"><br>
+        Data de Nascimento: <input type="date" name="data_nascimento"><br>
+        CPF: <input type="text" name="cpf"><br>
+        Sexo: 
+        <select name="sexo">
+            <option value="M">Masculino</option>
+            <option value="F">Feminino</option>
+        </select><br>
+        Cidade: <input type="text" name="cidade"><br>
+        Bairro: <input type="text" name="bairro"><br>
+        Rua: <input type="text" name="rua"><br>
+        Número: <input type="text" name="numero"><br>
+        Complemento: <input type="text" name="complemento"><br>
+        <input type="submit" value="Cadastrar">
+    </form>
+
+    <?php
+    include 'conexao.php';
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Receber dados do formulário
+        $nome = $_POST['nome'];
+        $data_nascimento = $_POST['data_nascimento'];
+        $cpf = $_POST['cpf'];
+        $sexo = $_POST['sexo'];
+        $cidade = $_POST['cidade'];
+        $bairro = $_POST['bairro'];
+        $rua = $_POST['rua'];
+        $numero = $_POST['numero'];
+        $complemento = $_POST['complemento'];
+
+        // Query para inserir pessoa no banco de dados
+        $sql = "INSERT INTO pessoas (nome, data_nascimento, cpf, sexo, cidade, bairro, rua, numero, complemento) 
+                VALUES ('$nome', '$data_nascimento', '$cpf', '$sexo', '$cidade', '$bairro', '$rua', '$numero', '$complemento')";
+        
+        if ($conn->query($sql) === TRUE) {
+            echo "Pessoa cadastrada com sucesso!";
+        } else {
+            echo "Erro ao cadastrar pessoa: " . $conn->error;
+        }
+    }
+
+    // Query para selecionar todas as pessoas cadastradas
+    $sql = "SELECT * FROM pessoas";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        echo "<h2>Pessoas Cadastradas</h2>";
+        while ($row = $result->fetch_assoc()) {
+            echo "ID: " . $row["id"] . "<br>";
+            echo "Nome: " . $row["nome"] . "<br>";
+            echo "Data de Nascimento: " . $row["data_nascimento"] . "<br>";
+            echo "CPF: " . $row["cpf"] . "<br>";
+            echo "Sexo: " . $row["sexo"] . "<br>";
+            echo "Cidade: " . $row["cidade"] . "<br>";
+            echo "Bairro: " . $row["bairro"] . "<br>";
+            echo "Rua: " . $row["rua"] . "<br>";
+            echo "Número: " . $row["numero"] . "<br>";
+            echo "Complemento: " . $row["complemento"] . "<br>";
+            echo "<br>";
+        }
+    } else {
+        echo "Nenhum resultado encontrado.";
+    }
+
+    // Fechar a conexão
+    $conn->close();
+    ?>
+</body>
+</html>
